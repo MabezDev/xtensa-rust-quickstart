@@ -1,0 +1,20 @@
+[package]
+name = "esp32-test"
+version = "0.1.0"
+authors = ["Scott Mabin <MabezDev@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+
+
+[profile.dev]
+lto = false 
+incremental = false
+debug = true
+codegen-units = 1
+
+[profile.release]
+lto = false
+incremental = false
+debug = true
+codegen-units = 1

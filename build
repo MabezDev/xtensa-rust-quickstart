@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# problem:- the core crate is not using the passed rustflags, temp work around copy the output of -v, and add the correct emit flags for the core crate
+
+# build the core
+RUSTFLAGS=--emit=asm XARGO_RUST_SRC=/home/mabez/development/esp32-rust/rust/src  RUSTC=/home/mabez/development/esp32-rust/rust/build/x86_64-unknown-linux-gnu/stage2/bin/rustc  xargo -v build --release

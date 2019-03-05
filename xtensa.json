@@ -1,0 +1,28 @@
+{
+    "abi-blacklist": [
+        "stdcall",
+        "fastcall",
+        "vectorcall",
+        "thiscall",
+        "win64",
+        "sysv64"
+    ],
+    "arch": "xtensa",
+    "data-layout": "e-m:e-p:32:32-i1:8:32-i8:8:32-i16:16:32-i64:64",
+    "emit-debug-gdb-scripts": false,
+    "env": "",
+    "target-endian": "little",
+    "executables": true,
+    "is-builtin": false,
+    "linker": "/home/mabez/programs/xtensa-esp32-elf/bin/xtensa-esp32-elf-ld",
+    "linker-flavor": "gcc",
+    "llvm-target": "xtensa-none-elf",
+    "max-atomic-width": 32,
+    "os": "unknown",
+    "panic-strategy": "abort",
+    "relocation-model": "static",
+    "target-c-int-width": "32",
+    "target-endian": "little",
+    "target-pointer-width": "32",
+    "vendor": "unknown"
+}
