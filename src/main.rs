@@ -4,16 +4,12 @@
 use core::panic::PanicInfo;
 use core::sync::atomic::{self, Ordering};
 
+use panic_ramdump as _;
+
 #[no_mangle]
 fn main() {
     
 }
 
 
-#[inline(never)]
-#[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
-    loop {
-        atomic::compiler_fence(Ordering::SeqCst);
-    }
-}
+

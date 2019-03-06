@@ -5,7 +5,7 @@ authors = ["Scott Mabin <MabezDev@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-
+panic-ramdump = "0.1.0"
 
 [profile.dev]
 lto = false 
