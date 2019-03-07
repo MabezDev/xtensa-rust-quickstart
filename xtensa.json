@@ -8,10 +8,9 @@
         "sysv64"
     ],
     "arch": "xtensa",
-    "data-layout": "e-m:e-p:32:32-i1:8:32-i8:8:32-i16:16:32-i64:64",
+    "data-layout": "e-m:e-p:32:32-i1:8:32-i8:8:32-i16:16:32-i64:64-f64:64-a:0:32-n32",
     "emit-debug-gdb-scripts": false,
     "env": "",
-    "target-endian": "little",
     "executables": true,
     "is-builtin": false,
     "linker": "/home/mabez/programs/xtensa-esp32-elf/bin/xtensa-esp32-elf-ld",
