@@ -10,11 +10,11 @@ panic-ramdump = "0.1.0"
 [profile.dev]
 lto = false 
 incremental = false
-debug = true
+debug = false # debug adds frame pointers - which must be omitted
 codegen-units = 1
 
 [profile.release]
 lto = false
 incremental = false
-debug = true
+debug = false # debug adds frame pointers - which must be omitted
 codegen-units = 1

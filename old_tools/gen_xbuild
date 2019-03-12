@@ -5,4 +5,4 @@
 CUSTOM_RUSTC=/home/mabez/development/rust/rust-xtensa/rust
 
 # build the core
-XARGO_RUST_SRC=$CUSTOM_RUSTC/src RUSTC=$CUSTOM_RUSTC/build/x86_64-unknown-linux-gnu/stage2/bin/rustc  xargo -v build --release
+RUSTFLAGS="--emit=asm" XARGO_RUST_SRC=$CUSTOM_RUSTC/src RUSTC=$CUSTOM_RUSTC/build/x86_64-unknown-linux-gnu/stage2/bin/rustc  cargo xbuild --verbose --release --target xtensa

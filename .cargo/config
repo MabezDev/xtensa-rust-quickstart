@@ -1,3 +1,8 @@
-[build]
-target = "xtensa"
-rustflags = ["--emit=asm"]
+# [build]
+# target = "xtensa"
+# rustflags = ["--emit=asm", "-C debuginfo=0"]
+
+# [target.xtensa-unknown-elf]
+
+# rustflags = ["--emit=asm", "-C debuginfo=0"] 
+# emit asm, emit debuginfo=0 omits frame pointers
