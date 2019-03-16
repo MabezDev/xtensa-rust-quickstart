@@ -1,8 +1,14 @@
-# [build]
-# target = "xtensa"
-# rustflags = ["--emit=asm", "-C debuginfo=0"]
 
-# [target.xtensa-unknown-elf]
+# [target.'cfg(all(target_arch = "xtensa", target_os = "none"))']
 
-# rustflags = ["--emit=asm", "-C debuginfo=0"] 
-# emit asm, emit debuginfo=0 omits frame pointers
+[target]
+runner = "xtensa-esp32-elf-gdb -q -x openocd.gdb"
+
+
+[build]
+rustflags = [
+  "-C", "link-arg=-nostartfiles",
+  # "-C", "link-arg=-Txtensa.x",
+  # "-Z", "print-link-args"
+]
+target = "xtensa-none-elf"
