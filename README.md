@@ -13,6 +13,12 @@ First you will need to build `rustc` and `llvm` you can find rough instructions 
 
 Modifiy the `build` script to fix the path of the custom `rustc`, then execute the build script build.
 
+## Resources
+
+- The [esp-rs](https://github.com/esp-rs) organization has been formed to develop runtime, pac and hal crates for the esp32 and eventually esp8266.
+- Checkout @lexxvir's [project](https://github.com/lexxvir/esp32-hello) for an example of using the esp-idf bindings in a Rust application.
+
 ## FAQ
 
-    - `error: intermittent IO error while iterating directory` - try creating that directory
+- `error: intermittent IO error while iterating directory` - try creating that directory
+- `undefined reference to .L` see [this issue](https://github.com/MabezDev/xtensa-rust-quickstart/issues/1)
