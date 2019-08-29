@@ -1,6 +1,5 @@
 
-# Experiments with Rust on the xtensa architecture
-
+# Rust on the xtensa architecture
 
 ## Building
 
@@ -8,6 +7,7 @@
 
     - xargo or cargo xbuild
     - xtensa-esp32-elf toolchain must be in your `$PATH`
+    - esptool, if targeting the esp32 or esp8266
 
 First you will need to build `rustc` and `llvm` you can find rough instructions [here](https://gist.github.com/MabezDev/26e175790f84f2f2b0f9bca4e63275d1).
 
@@ -15,10 +15,12 @@ First you will need to build `rustc` and `llvm` you can find rough instructions 
 
 `$ cargo generate --git https://github.com/MabezDev/xtensa-rust-quickstart`
 
-To clone this repo and use it as a template.
+Requires cargo generate.
 
 ## Workflow
 
+Update `setenv` to use your xtensa enabled rustc, then simply run `source setenv`.
+From then on, you can just call `xargo build` or use the built in `flash` script to build and flash to the esp.
 
 
 ## Resources
