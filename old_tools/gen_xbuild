@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# problem:- the core crate is not using the passed rustflags, temp work around copy the output of -v, and add the correct emit flags for the core crate
-
-CUSTOM_RUSTC=/home/mabez/development/rust/rust-xtensa/rust
-
-# build the core
-RUSTFLAGS="--emit=asm" XARGO_RUST_SRC=$CUSTOM_RUSTC/src RUSTC=$CUSTOM_RUSTC/build/x86_64-unknown-linux-gnu/stage2/bin/rustc  cargo xbuild --verbose --release --target xtensa

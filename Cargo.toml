@@ -5,7 +5,12 @@ authors = ["Scott Mabin <MabezDev@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-panic-ramdump = "0.1.0"
+xtensa-lx6-rt = { git = "https://github.com/esp-rs/xtensa-lx6-rt" }
+
+# NOTE: if you change this, remember to change all the scripts
+[[bin]]
+name = "esp32"
+path = "src/main.rs"
 
 [profile.dev]
 lto = false 

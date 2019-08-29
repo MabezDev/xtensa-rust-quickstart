@@ -1,6 +1,4 @@
 
-# [target.'cfg(all(target_arch = "xtensa", target_os = "none"))']
-
 [target]
 runner = "xtensa-esp32-elf-gdb -q -x openocd.gdb"
 
@@ -8,7 +6,7 @@ runner = "xtensa-esp32-elf-gdb -q -x openocd.gdb"
 [build]
 rustflags = [
   "-C", "link-arg=-nostartfiles",
-  # "-C", "link-arg=-Txtensa.x",
-  # "-Z", "print-link-args"
+  "-C", "debuginfo=0", # not 2
+  # "-C", "link-arg=-Wl,-Txtensa.x",
 ]
-target = "xtensa-none-elf"
+target = "xtensa-esp32-none-elf"
