@@ -3,7 +3,7 @@
 xargo build
 
 # change this for release flashes
-BIN_PATH=./target/xtensa-esp32-none-elf/debug/esp32
+BIN_PATH=target/xtensa-esp32-none-elf/debug/esp32
 
 rm $BIN_PATH.bin
 

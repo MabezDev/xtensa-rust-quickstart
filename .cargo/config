@@ -7,6 +7,6 @@ runner = "xtensa-esp32-elf-gdb -q -x openocd.gdb"
 rustflags = [
   "-C", "link-arg=-nostartfiles",
   "-C", "debuginfo=0", # not 2
-  # "-C", "link-arg=-Wl,-Txtensa.x",
+  "-C", "link-arg=-Wl,-Tlink.x",
 ]
 target = "xtensa-esp32-none-elf"
