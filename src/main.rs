@@ -29,15 +29,7 @@ const GPIO_FUNCX_OUT_SEL_CFG: u32 = GPIO_FUNCX_OUT_BASE + (BLINKY_GPIO * 4);
 
 #[no_mangle]
 fn main() -> ! {
-    // configure the pin as an output
-    unsafe {
-        core::ptr::write_volatile(GPIO_ENABLE_W1TS_REG as *mut _, 0x1 << BLINKY_GPIO);
-        core::ptr::write_volatile(GPIO_FUNCX_OUT_SEL_CFG as *mut _, 0x100); // 0x100 makes this pin a simple gpio pin - see the technical reference
-        
-        // if your led pin doesn't default to GPIO you will need to set this register see technical ref for details
-        // core::ptr::write_volatile(IO_MUX_GPIO2_REG as *mut _, BLINKY_GPIO); // GPIO2 function 1 is being a gpio port
-    }
-
+    configure_pin_as_output(BLINKY_GPIO);
     loop {
         set_led(BLINKY_GPIO, true);
         delay(CORE_HZ);
@@ -55,6 +47,17 @@ pub fn set_led(idx: u32, val: bool) {
        unsafe {
             core::ptr::write_volatile(GPIO_OUT_W1TC_REG as *mut u32, 0x1 << idx); // 
         } 
+    }
+}
+
+pub fn configure_pin_as_output(gpio: u32){
+    // configure the pin as an output
+    unsafe {
+        core::ptr::write_volatile(GPIO_ENABLE_W1TS_REG as *mut _, 0x1 << gpio);
+        core::ptr::write_volatile(GPIO_FUNCX_OUT_SEL_CFG as *mut _, 0x100); // 0x100 makes this pin a simple gpio pin - see the technical reference
+        
+        // if your led pin doesn't default to GPIO you will need to set this register see technical ref for details
+        // core::ptr::write_volatile(IO_MUX_GPIO2_REG as *mut _, BLINKY_GPIO); // GPIO2 function 1 is being a gpio port
     }
 }
 
