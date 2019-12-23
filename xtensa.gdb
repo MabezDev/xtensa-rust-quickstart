@@ -1,4 +1,4 @@
 target remote :3333
-set remote hardware-watchpoint-limit 2
-mon reset halt
-flushregs
+#set remote hardware-watchpoint-limit 2
+#mon reset halt
+# flushregs

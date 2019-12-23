@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 xtensa-lx6-rt = { git = "https://github.com/esp-rs/xtensa-lx6-rt" }
+esp32 = "0.1.0"
 # xtensa-lx6-rt = { path = "/home/mabez/development/rust/embedded/projects/xtensa-lx6-rt" }
 
 # NOTE: if you change this, remember to change all the scripts
@@ -14,13 +15,13 @@ name = "esp32"
 path = "src/main.rs"
 
 [profile.dev]
-lto = false 
+lto = true 
 incremental = false
 debug = false # debug adds frame pointers - which must be omitted
 codegen-units = 1
 
 [profile.release]
-lto = false
+lto = true
 incremental = false
 debug = false # debug adds frame pointers - which must be omitted
 codegen-units = 1

@@ -5,60 +5,39 @@
 use xtensa_lx6_rt as _;
 
 use core::panic::PanicInfo;
+use esp32;
 
 /// The default clock source is the onboard crystal
 /// In most cases 40mhz (but can be as low as 2mhz depending on the board) 
 const CORE_HZ: u32 = 40_000_000;
 
-// GPIO output enable reg
-const GPIO_ENABLE_W1TS_REG: u32 = 0x3FF44024;
-
-// gpio output set register
-const GPIO_OUT_W1TS_REG: u32 = 0x3FF44008;
-// gpio output clear register
-const GPIO_OUT_W1TC_REG : u32 = 0x3FF4400C;
-
-
 const BLINKY_GPIO: u32 = 2; // the GPIO hooked up to the onboard LED
-
-/// GPIO function mode
-const GPIO_FUNCX_OUT_BASE: u32 = 0x3FF44530;
-const GPIO_FUNCX_OUT_SEL_CFG: u32 = GPIO_FUNCX_OUT_BASE + (BLINKY_GPIO * 4);
-
-// const IO_MUX_GPIO2_REG: u32 = 0x3FF49040;
 
 #[no_mangle]
 fn main() -> ! {
-    configure_pin_as_output(BLINKY_GPIO);
+    let dp = unsafe { esp32::Peripherals::steal() };
+    let mut gpio = dp.GPIO;
+    configure_pin_as_output(&mut gpio, BLINKY_GPIO);
     loop {
-        set_led(BLINKY_GPIO, true);
+        set_led(&mut gpio, BLINKY_GPIO, true);
         delay(CORE_HZ);
-        set_led(BLINKY_GPIO, false);
+        set_led(&mut gpio, BLINKY_GPIO, false);
         delay(CORE_HZ);
     }
 }
 
-pub fn set_led(idx: u32, val: bool) {
+pub fn set_led(reg: &mut esp32::GPIO, idx: u32, val: bool) {
     if val {
-        unsafe {
-            core::ptr::write_volatile(GPIO_OUT_W1TS_REG as *mut u32, 0x1 << idx);           
-        }
+        reg.gpio_out_w1ts_reg.write(|w| unsafe { w.bits(0x1 << idx) });
     } else {
-       unsafe {
-            core::ptr::write_volatile(GPIO_OUT_W1TC_REG as *mut u32, 0x1 << idx); // 
-        } 
+       reg.gpio_out_w1tc_reg.write(|w| unsafe { w.bits(0x1 << idx) });
     }
 }
 
-pub fn configure_pin_as_output(gpio: u32){
-    // configure the pin as an output
-    unsafe {
-        core::ptr::write_volatile(GPIO_ENABLE_W1TS_REG as *mut _, 0x1 << gpio);
-        core::ptr::write_volatile(GPIO_FUNCX_OUT_SEL_CFG as *mut _, 0x100); // 0x100 makes this pin a simple gpio pin - see the technical reference
-        
-        // if your led pin doesn't default to GPIO you will need to set this register see technical ref for details
-        // core::ptr::write_volatile(IO_MUX_GPIO2_REG as *mut _, BLINKY_GPIO); // GPIO2 function 1 is being a gpio port
-    }
+/// Configure the pin as an output
+pub fn configure_pin_as_output(reg: &mut esp32::GPIO, gpio: u32){
+    reg.gpio_enable_w1ts_reg.write(|w| unsafe  { w.bits(0x1 << gpio) });
+    reg.gpio_func2_out_sel_cfg_reg.write(|w| unsafe { w.bits(0x100) });
 }
 
 /// rough delay - as a guess divide your cycles by 20 (results will differ on opt level)

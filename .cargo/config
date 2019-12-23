@@ -8,5 +8,6 @@ rustflags = [
   "-C", "link-arg=-nostartfiles",
   "-C", "debuginfo=0", # not 2
   "-C", "link-arg=-Wl,-Tlink.x",
+  "-C", "save-temps"
 ]
 target = "xtensa-esp32-none-elf"
