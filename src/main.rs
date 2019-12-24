@@ -13,17 +13,45 @@ const CORE_HZ: u32 = 40_000_000;
 
 const BLINKY_GPIO: u32 = 2; // the GPIO hooked up to the onboard LED
 
+const RTC_CNTL_WDT_WKEY_VALUE: u32 = 0x50D83AA1;
+
 #[no_mangle]
 fn main() -> ! {
     let dp = unsafe { esp32::Peripherals::steal() };
+    
     let mut gpio = dp.GPIO;
+    let mut rtccntl = dp.RTCCNTL;
+    disable_wdt(&mut rtccntl);
+
     configure_pin_as_output(&mut gpio, BLINKY_GPIO);
     loop {
         set_led(&mut gpio, BLINKY_GPIO, true);
-        delay(CORE_HZ);
-        set_led(&mut gpio, BLINKY_GPIO, false);
-        delay(CORE_HZ);
+        rtccntl.rtc_cntl_wdtfeed_reg.write(|w| w.rtc_cntl_wdt_feed().set_bit());
+        // delay(CORE_HZ);
+        // set_led(&mut gpio, BLINKY_GPIO, false);
+        // delay(CORE_HZ);
     }
+}
+
+fn disable_wdt(rtccntl: &mut esp32::RTCCNTL) {
+    rtccntl.rtc_cntl_wdtwprotect_reg.write(|w| unsafe { w.bits(RTC_CNTL_WDT_WKEY_VALUE) });
+    rtccntl.rtc_cntl_wdtfeed_reg.modify(|_, w| w.rtc_cntl_wdt_feed().set_bit());
+    rtccntl.rtc_cntl_wdtconfig0_reg.modify(|_, w| unsafe {
+        w
+        .rtc_cntl_wdt_stg0()
+        .bits(0x0)
+        .rtc_cntl_wdt_stg1()
+        .bits(0x0)
+        .rtc_cntl_wdt_stg2()
+        .bits(0x0)
+        .rtc_cntl_wdt_stg3()
+        .bits(0x0)
+        .rtc_cntl_wdt_flashboot_mod_en()
+        .clear_bit()
+        .rtc_cntl_wdt_en()
+        .clear_bit()
+    });
+    rtccntl.rtc_cntl_wdtwprotect_reg.write(|w| unsafe { w.bits(0x0) });
 }
 
 pub fn set_led(reg: &mut esp32::GPIO, idx: u32, val: bool) {
