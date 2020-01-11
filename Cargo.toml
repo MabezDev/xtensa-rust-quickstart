@@ -6,7 +6,8 @@ edition = "2018"
 
 [dependencies]
 xtensa-lx6-rt = { git = "https://github.com/esp-rs/xtensa-lx6-rt" }
-esp32 = "0.1.0"
+# esp32 = "0.1.0"
+esp32 = { path = "../../hal/esp32-pac"}
 # xtensa-lx6-rt = { path = "/home/mabez/development/rust/embedded/projects/xtensa-lx6-rt" }
 
 # NOTE: if you change this, remember to change all the scripts
