@@ -13,7 +13,7 @@ const CORE_HZ: u32 = 40_000_000;
 
 const BLINKY_GPIO: u32 = 2; // the GPIO hooked up to the onboard LED
 
-const RTC_CNTL_WDT_WKEY_VALUE: u32 = 0x50D83AA1;
+const WDT_WKEY_VALUE: u32 = 0x50D83AA1;
 
 #[no_mangle]
 fn main() -> ! {
@@ -21,51 +21,65 @@ fn main() -> ! {
     
     let mut gpio = dp.GPIO;
     let mut rtccntl = dp.RTCCNTL;
-    disable_wdt(&mut rtccntl);
+    let mut timg0 = dp.TIMG0;
+    let mut timg1 = dp.TIMG1;
+
+    // (https://github.com/espressif/openocd-esp32/blob/97ba3a6bb9eaa898d91df923bbedddfeaaaf28c9/src/target/esp32.c#L431)
+    // openocd disables the wdt's on halt
+    // we will do it manually on startup
+    disable_timg_wdts(&mut timg0, &mut timg1);
+    disable_rtc_wdt(&mut rtccntl);
 
     configure_pin_as_output(&mut gpio, BLINKY_GPIO);
     loop {
         set_led(&mut gpio, BLINKY_GPIO, true);
-        rtccntl.rtc_cntl_wdtfeed_reg.write(|w| w.rtc_cntl_wdt_feed().set_bit());
-        // delay(CORE_HZ);
-        // set_led(&mut gpio, BLINKY_GPIO, false);
-        // delay(CORE_HZ);
+        delay(CORE_HZ);
+        set_led(&mut gpio, BLINKY_GPIO, false);
+        delay(CORE_HZ);
     }
 }
 
-fn disable_wdt(rtccntl: &mut esp32::RTCCNTL) {
-    rtccntl.rtc_cntl_wdtwprotect_reg.write(|w| unsafe { w.bits(RTC_CNTL_WDT_WKEY_VALUE) });
-    rtccntl.rtc_cntl_wdtfeed_reg.modify(|_, w| w.rtc_cntl_wdt_feed().set_bit());
-    rtccntl.rtc_cntl_wdtconfig0_reg.modify(|_, w| unsafe {
+fn disable_rtc_wdt(rtccntl: &mut esp32::RTCCNTL) {
+    /* Disables the RTCWDT */
+    rtccntl.wdtwprotect.write(|w| unsafe { w.bits(WDT_WKEY_VALUE) });
+    rtccntl.wdtconfig0.modify(|_, w| unsafe {
         w
-        .rtc_cntl_wdt_stg0()
+        .wdt_stg0()
         .bits(0x0)
-        .rtc_cntl_wdt_stg1()
+        .wdt_stg1()
         .bits(0x0)
-        .rtc_cntl_wdt_stg2()
+        .wdt_stg2()
         .bits(0x0)
-        .rtc_cntl_wdt_stg3()
+        .wdt_stg3()
         .bits(0x0)
-        .rtc_cntl_wdt_flashboot_mod_en()
+        .wdt_flashboot_mod_en()
         .clear_bit()
-        .rtc_cntl_wdt_en()
+        .wdt_en()
         .clear_bit()
     });
-    rtccntl.rtc_cntl_wdtwprotect_reg.write(|w| unsafe { w.bits(0x0) });
+    rtccntl.wdtwprotect.write(|w| unsafe { w.bits(0x0) });
+}
+
+fn disable_timg_wdts(timg0: &mut esp32::TIMG0, timg1: &mut esp32::TIMG1) {
+    timg0.wdtwprotect.write(|w| unsafe { w.bits(WDT_WKEY_VALUE)});
+    timg1.wdtwprotect.write(|w| unsafe { w.bits(WDT_WKEY_VALUE)});
+
+    timg0.wdtconfig0.write(|w| unsafe{ w.bits(0x0)});
+    timg1.wdtconfig0.write(|w| unsafe{ w.bits(0x0)});
 }
 
 pub fn set_led(reg: &mut esp32::GPIO, idx: u32, val: bool) {
     if val {
-        reg.gpio_out_w1ts_reg.write(|w| unsafe { w.bits(0x1 << idx) });
+        reg.out_w1ts.write(|w| unsafe { w.bits(0x1 << idx) });
     } else {
-       reg.gpio_out_w1tc_reg.write(|w| unsafe { w.bits(0x1 << idx) });
+        reg.out_w1tc.write(|w| unsafe { w.bits(0x1 << idx) });
     }
 }
 
 /// Configure the pin as an output
 pub fn configure_pin_as_output(reg: &mut esp32::GPIO, gpio: u32){
-    reg.gpio_enable_w1ts_reg.write(|w| unsafe  { w.bits(0x1 << gpio) });
-    reg.gpio_func2_out_sel_cfg_reg.write(|w| unsafe { w.bits(0x100) });
+    reg.enable_w1ts.write(|w| unsafe  { w.bits(0x1 << gpio) });
+    reg.func2_out_sel_cfg.write(|w| unsafe { w.bits(0x100) });
 }
 
 /// rough delay - as a guess divide your cycles by 20 (results will differ on opt level)
