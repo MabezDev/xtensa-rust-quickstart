@@ -70,16 +70,16 @@ fn disable_timg_wdts(timg0: &mut esp32::TIMG0, timg1: &mut esp32::TIMG1) {
 
 pub fn set_led(reg: &mut esp32::GPIO, idx: u32, val: bool) {
     if val {
-        reg.out_w1ts.write(|w| unsafe { w.bits(0x1 << idx) });
+        reg.out_w1ts.modify(|_, w| unsafe { w.bits(0x1 << idx) });
     } else {
-        reg.out_w1tc.write(|w| unsafe { w.bits(0x1 << idx) });
+        reg.out_w1tc.modify(|_, w| unsafe { w.bits(0x1 << idx) });
     }
 }
 
 /// Configure the pin as an output
 pub fn configure_pin_as_output(reg: &mut esp32::GPIO, gpio: u32){
-    reg.enable_w1ts.write(|w| unsafe  { w.bits(0x1 << gpio) });
-    reg.func2_out_sel_cfg.write(|w| unsafe { w.bits(0x100) });
+    reg.enable_w1ts.modify(|_, w| unsafe  { w.bits(0x1 << gpio) });
+    reg.func2_out_sel_cfg.modify(|_, w| unsafe { w.bits(0x100) });
 }
 
 /// rough delay - as a guess divide your cycles by 20 (results will differ on opt level)

@@ -8,6 +8,6 @@ rustflags = [
   "-C", "link-arg=-nostartfiles",
   "-C", "debuginfo=0", # not 2
   "-C", "link-arg=-Wl,-Tlink.x",
-  "-C", "save-temps"
+  "--emit", "llvm-bc,link", # see: https://github.com/MabezDev/xtensa-rust-quickstart/issues/1#issuecomment-481119695
 ]
 target = "xtensa-esp32-none-elf"
