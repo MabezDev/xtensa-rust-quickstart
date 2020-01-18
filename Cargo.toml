@@ -6,8 +6,7 @@ edition = "2018"
 
 [dependencies]
 xtensa-lx6-rt = { git = "https://github.com/esp-rs/xtensa-lx6-rt", rev = "89cea20c441d4a1624de99c7278df13af5c211a4" }
-# esp32 = "0.1.0"
-esp32 = { path = "../../hal/esp32-pac"}
+esp32 = "0.2.1"
 
 # NOTE: if you change this, remember to change all the scripts
 [[bin]]
