@@ -15,13 +15,12 @@ name = "esp32"
 path = "src/main.rs"
 
 [profile.dev]
-lto = true 
 incremental = false
-debug = false # debug adds frame pointers - which must be omitted
+debug = true
 codegen-units = 1
 
 [profile.release]
 lto = true
 incremental = false
-debug = false # debug adds frame pointers - which must be omitted
+debug = true
 codegen-units = 1

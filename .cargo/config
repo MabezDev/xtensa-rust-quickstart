@@ -5,9 +5,8 @@ runner = "xtensa-esp32-elf-gdb -q -x openocd.gdb"
 
 [build]
 rustflags = [
-  "-C", "link-arg=-nostartfiles",
-  "-C", "debuginfo=0", # not 2
-  "-C", "link-arg=-Wl,-Tlink.x",
-  "--emit", "llvm-bc,link", # see: https://github.com/MabezDev/xtensa-rust-quickstart/issues/1#issuecomment-481119695
+  # TODO we can probably use lld, if we can figure out how to build it!
+  "-C", "linker=xtensa-esp32-elf-ld",
+  "-C", "link-arg=-Tlink.x",
 ]
 target = "xtensa-esp32-none-elf"
