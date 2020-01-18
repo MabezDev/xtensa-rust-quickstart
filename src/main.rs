@@ -5,60 +5,81 @@
 use xtensa_lx6_rt as _;
 
 use core::panic::PanicInfo;
+use esp32;
 
 /// The default clock source is the onboard crystal
 /// In most cases 40mhz (but can be as low as 2mhz depending on the board) 
 const CORE_HZ: u32 = 40_000_000;
 
-// GPIO output enable reg
-const GPIO_ENABLE_W1TS_REG: u32 = 0x3FF44024;
-
-// gpio output set register
-const GPIO_OUT_W1TS_REG: u32 = 0x3FF44008;
-// gpio output clear register
-const GPIO_OUT_W1TC_REG : u32 = 0x3FF4400C;
-
-
 const BLINKY_GPIO: u32 = 2; // the GPIO hooked up to the onboard LED
 
-/// GPIO function mode
-const GPIO_FUNCX_OUT_BASE: u32 = 0x3FF44530;
-const GPIO_FUNCX_OUT_SEL_CFG: u32 = GPIO_FUNCX_OUT_BASE + (BLINKY_GPIO * 4);
-
-// const IO_MUX_GPIO2_REG: u32 = 0x3FF49040;
+const WDT_WKEY_VALUE: u32 = 0x50D83AA1;
 
 #[no_mangle]
 fn main() -> ! {
-    configure_pin_as_output(BLINKY_GPIO);
+    let dp = unsafe { esp32::Peripherals::steal() };
+    
+    let mut gpio = dp.GPIO;
+    let mut rtccntl = dp.RTCCNTL;
+    let mut timg0 = dp.TIMG0;
+    let mut timg1 = dp.TIMG1;
+
+    // (https://github.com/espressif/openocd-esp32/blob/97ba3a6bb9eaa898d91df923bbedddfeaaaf28c9/src/target/esp32.c#L431)
+    // openocd disables the wdt's on halt
+    // we will do it manually on startup
+    disable_timg_wdts(&mut timg0, &mut timg1);
+    disable_rtc_wdt(&mut rtccntl);
+
+    configure_pin_as_output(&mut gpio, BLINKY_GPIO);
     loop {
-        set_led(BLINKY_GPIO, true);
+        set_led(&mut gpio, BLINKY_GPIO, true);
         delay(CORE_HZ);
-        set_led(BLINKY_GPIO, false);
+        set_led(&mut gpio, BLINKY_GPIO, false);
         delay(CORE_HZ);
     }
 }
 
-pub fn set_led(idx: u32, val: bool) {
+fn disable_rtc_wdt(rtccntl: &mut esp32::RTCCNTL) {
+    /* Disables the RTCWDT */
+    rtccntl.wdtwprotect.write(|w| unsafe { w.bits(WDT_WKEY_VALUE) });
+    rtccntl.wdtconfig0.modify(|_, w| unsafe {
+        w
+        .wdt_stg0()
+        .bits(0x0)
+        .wdt_stg1()
+        .bits(0x0)
+        .wdt_stg2()
+        .bits(0x0)
+        .wdt_stg3()
+        .bits(0x0)
+        .wdt_flashboot_mod_en()
+        .clear_bit()
+        .wdt_en()
+        .clear_bit()
+    });
+    rtccntl.wdtwprotect.write(|w| unsafe { w.bits(0x0) });
+}
+
+fn disable_timg_wdts(timg0: &mut esp32::TIMG0, timg1: &mut esp32::TIMG1) {
+    timg0.wdtwprotect.write(|w| unsafe { w.bits(WDT_WKEY_VALUE)});
+    timg1.wdtwprotect.write(|w| unsafe { w.bits(WDT_WKEY_VALUE)});
+
+    timg0.wdtconfig0.write(|w| unsafe{ w.bits(0x0)});
+    timg1.wdtconfig0.write(|w| unsafe{ w.bits(0x0)});
+}
+
+pub fn set_led(reg: &mut esp32::GPIO, idx: u32, val: bool) {
     if val {
-        unsafe {
-            core::ptr::write_volatile(GPIO_OUT_W1TS_REG as *mut u32, 0x1 << idx);           
-        }
+        reg.out_w1ts.modify(|_, w| unsafe { w.bits(0x1 << idx) });
     } else {
-       unsafe {
-            core::ptr::write_volatile(GPIO_OUT_W1TC_REG as *mut u32, 0x1 << idx); // 
-        } 
+        reg.out_w1tc.modify(|_, w| unsafe { w.bits(0x1 << idx) });
     }
 }
 
-pub fn configure_pin_as_output(gpio: u32){
-    // configure the pin as an output
-    unsafe {
-        core::ptr::write_volatile(GPIO_ENABLE_W1TS_REG as *mut _, 0x1 << gpio);
-        core::ptr::write_volatile(GPIO_FUNCX_OUT_SEL_CFG as *mut _, 0x100); // 0x100 makes this pin a simple gpio pin - see the technical reference
-        
-        // if your led pin doesn't default to GPIO you will need to set this register see technical ref for details
-        // core::ptr::write_volatile(IO_MUX_GPIO2_REG as *mut _, BLINKY_GPIO); // GPIO2 function 1 is being a gpio port
-    }
+/// Configure the pin as an output
+pub fn configure_pin_as_output(reg: &mut esp32::GPIO, gpio: u32){
+    reg.enable_w1ts.modify(|_, w| unsafe  { w.bits(0x1 << gpio) });
+    reg.func2_out_sel_cfg.modify(|_, w| unsafe { w.bits(0x100) });
 }
 
 /// rough delay - as a guess divide your cycles by 20 (results will differ on opt level)

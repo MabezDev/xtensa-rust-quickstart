@@ -1,3 +1,7 @@
 /target
 **/*.rs.bk
 Cargo.lock
+.vscode/.cortex-debug.peripherals.state.json
+.vscode/.cortex-debug.registers.state.json
+core
+svd/
