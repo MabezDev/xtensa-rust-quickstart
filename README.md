@@ -53,19 +53,13 @@ or
     $ git clone https://github.com/MabezDev/xtensa-rust-quickstart
 
 ### Workflow
-Update `CUSTOM_RUSTC` in `setenv` to point to the version of rust you compiled earlier.
-
-Then load the environment variables with `source setenv`
+Update `CUSTOM_RUSTC` in `setenv` to point to the version of rust you compiled earlier. Then load the environment variables with `source setenv`.
 
 If you installed `xbuild` instead of `xargo`, you will need to update `flash` and `flash_release` accordingly.
 
 You should now be able to call xargo (or cargo xbuild) to build the project. You can also run the flash script to both build the project, and flash it to the ESP32
 
-You may need to change the parameter `BLINKY_GPIO`.
-
-Adjustments to the chip's IO_MUX peripheral may be necessary, which will require familiarty with the ESP32 Technical Reference Manual.
-
-See [this issue](https://github.com/MabezDev/idf2svd/issues/11) for more information.
+You will need to change the parameter `BLINKY_GPIO` to match your board's LED pin. Unfortunately, this may require adjustments to the chip's IO_MUX peripheral, which will require familiarty with the ESP32 Technical Reference Manual. See [this issue](https://github.com/MabezDev/idf2svd/issues/11) for more information.
 
 ## Resources
 
