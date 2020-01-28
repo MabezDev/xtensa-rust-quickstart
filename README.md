@@ -7,6 +7,7 @@
 
 #### llvm-xtensa
 Please refer to the [llvm-xtensa](https://github.com/espressif/llvm-xtensa) project for authoratative instructions.
+
     $ git clone https://github.com/espressif/llvm-xtensa
     $ cd llvm-xtensa
     $ mkdir build
@@ -14,12 +15,15 @@ Please refer to the [llvm-xtensa](https://github.com/espressif/llvm-xtensa) proj
     $ cmake .. -DLLVM_TARGETS_TO_BUILD="Xtensa;X86" -DCMAKE_BUILD_TYPE=Release -G "Ninja"
     $ make
 
-Calling make with an appropriate number of threads will speed the process considerably. Many use the guideline "number of cores + 1". For example, for a processor with 4 logical cores:
+Calling make with an appropriate number of threads will speed the process considerably.
+
+Many use the guideline `n + 1`, where `n` is the number of processor cores on your machine. For example, for a processor with 4 logical cores:
     
     $ make -j5
 
 #### rust-xtensa
 Please refer to the [rust-xtensa](https://github.com/MabezDev/rust-xtensa) project for authoratative instructions.
+
     $ git clone https://github.com/MabezDev/rust-xtensa
     $ cd rust-xtensa
     $ git checkout xtensa-target
@@ -30,6 +34,7 @@ Please refer to the [rust-xtensa](https://github.com/MabezDev/rust-xtensa) proje
 Instructions can be found [on Espressif's web site](https://docs.espressif.com/projects/esp-idf/en/release-v3.0/get-started/linux-setup.html).
 
 Download the archived toolchain file, and extract it to the directory of your choice. Then add that directory to your `$PATH`. For example:
+
     $ mkdir ~/esp
     $ tar -xzf ~/Downloads/xtensa-esp32-elf-linux64-1.22.0-80-g6c4433a-5.2.0.tar.gz -C ~/esp
     $ PATH="$PATH:$HOME/esp/xtensa-esp32-elf/bin"
