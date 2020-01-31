@@ -6,10 +6,10 @@
 ### Requirements
 
 #### llvm-xtensa
-Please refer to the [llvm-xtensa](https://github.com/espressif/llvm-xtensa) project for authoratative instructions.
+Please refer to [Espressif's llvm](https://github.com/espressif/llvm-project) project for authoratative instructions.
 
-    $ git clone https://github.com/espressif/llvm-xtensa
-    $ cd llvm-xtensa
+    $ git clone https://github.com/espressif/llvm-project
+    $ cd llvm-project/llvm
     $ mkdir build
     $ cd build
     $ cmake .. -DLLVM_TARGETS_TO_BUILD="Xtensa;X86" -DCMAKE_BUILD_TYPE=Release -G "Ninja"
@@ -24,12 +24,12 @@ Many use the guideline `n + 1`, where `n` is the number of processor cores on yo
 #### rust-xtensa
 Please refer to the [rust-xtensa](https://github.com/MabezDev/rust-xtensa) project for authoratative instructions.
 
-Assuming you built llvm-xtensa in your home directory:
+Assuming you built llvm in your home directory:
 
     $ git clone https://github.com/MabezDev/rust-xtensa
     $ cd rust-xtensa
     $ git checkout xtensa-target
-    $ ./configure --llvm-root=$HOME/llvm-xtensa/build
+    $ ./configure --llvm-root=$HOME/llvm-project/llvm/build
     $ ./x.py build
 
 #### xtensa-esp32-elf toolchain
