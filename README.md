@@ -1,6 +1,8 @@
 
 # Rust on the xtensa architecture
 
+Need help? Join the esp-rs room on matrix, https://matrix.to/#/#esp-rs:matrix.org.
+
 ## Building
 
 ### Requirements
