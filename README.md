@@ -15,7 +15,7 @@ Please refer to [Espressif's llvm](https://github.com/espressif/llvm-project) pr
     $ mkdir build
     $ cd build
     $ cmake .. -DLLVM_TARGETS_TO_BUILD="Xtensa;X86" -DCMAKE_BUILD_TYPE=Release -G "Ninja"
-    $ make
+    $ cmake --build .
 
 Calling make with an appropriate number of threads will speed the process considerably.
 
