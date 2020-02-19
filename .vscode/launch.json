@@ -16,8 +16,8 @@
             "svdFile": "svd/esp32.svd",
             // complains about not allowed, but it does work.. https://github.com/Marus/cortex-debug/issues/111#issuecomment-504778053
             "serverpath": "${env:HOME}/programs/openocd-esp32/bin/openocd",
-            // for this to work you will have to run `ln -s xtensa-esp32-elf-gdb arm-none-eabi-gdb`
-            "toolchainPath": "${env:HOME}/programs/xtensa-esp32-elf/bin",
+            "toolchainPath": "${env:HOME}/programs/xtensa-esp32-elf/bin/",
+            "toolchainPrefix": "xtensa-esp32-elf",
             "configFiles": [
                 "openocd.cfg"
             ],

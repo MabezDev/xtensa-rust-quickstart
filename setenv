@@ -2,7 +2,7 @@
 
 
 # change this to the directory of where you built rustc for xtensa
-CUSTOM_RUSTC=/home/mabez/development/rust/xtensa/rust-xtensa
+CUSTOM_RUSTC=/home/mabez/development/rust/xtensa/rust-xtensa-dev
 
 export RUST_BACKTRACE=1 
 export XARGO_RUST_SRC=$CUSTOM_RUSTC/src 

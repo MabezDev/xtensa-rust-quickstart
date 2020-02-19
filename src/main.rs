@@ -6,12 +6,12 @@ use xtensa_lx6_rt as _;
 
 use core::panic::PanicInfo;
 use esp32;
+use esp32_hal::gpio::GpioExt;
+use esp32_hal::ehal::digital::v2::OutputPin;
 
 /// The default clock source is the onboard crystal
 /// In most cases 40mhz (but can be as low as 2mhz depending on the board) 
 const CORE_HZ: u32 = 40_000_000;
-
-const BLINKY_GPIO: u32 = 2; // the GPIO hooked up to the onboard LED
 
 const WDT_WKEY_VALUE: u32 = 0x50D83AA1;
 
@@ -19,7 +19,6 @@ const WDT_WKEY_VALUE: u32 = 0x50D83AA1;
 fn main() -> ! {
     let dp = unsafe { esp32::Peripherals::steal() };
     
-    let mut gpio = dp.GPIO;
     let mut rtccntl = dp.RTCCNTL;
     let mut timg0 = dp.TIMG0;
     let mut timg1 = dp.TIMG1;
@@ -30,11 +29,13 @@ fn main() -> ! {
     disable_timg_wdts(&mut timg0, &mut timg1);
     disable_rtc_wdt(&mut rtccntl);
 
-    configure_pin_as_output(&mut gpio, BLINKY_GPIO);
+    let gpios = dp.GPIO.split();
+    let mut blinky = gpios.gpio2.into_push_pull_output();
+
     loop {
-        set_led(&mut gpio, BLINKY_GPIO, true);
+        blinky.set_high().unwrap();
         delay(CORE_HZ);
-        set_led(&mut gpio, BLINKY_GPIO, false);
+        blinky.set_low().unwrap();
         delay(CORE_HZ);
     }
 }
@@ -68,20 +69,6 @@ fn disable_timg_wdts(timg0: &mut esp32::TIMG0, timg1: &mut esp32::TIMG1) {
     timg1.wdtconfig0.write(|w| unsafe{ w.bits(0x0)});
 }
 
-pub fn set_led(reg: &mut esp32::GPIO, idx: u32, val: bool) {
-    if val {
-        reg.out_w1ts.modify(|_, w| unsafe { w.bits(0x1 << idx) });
-    } else {
-        reg.out_w1tc.modify(|_, w| unsafe { w.bits(0x1 << idx) });
-    }
-}
-
-/// Configure the pin as an output
-pub fn configure_pin_as_output(reg: &mut esp32::GPIO, gpio: u32){
-    reg.enable_w1ts.modify(|_, w| unsafe  { w.bits(0x1 << gpio) });
-    reg.func2_out_sel_cfg.modify(|_, w| unsafe { w.bits(0x100) });
-}
-
 /// rough delay - as a guess divide your cycles by 20 (results will differ on opt level)
 pub fn delay2(clocks: u32) {
     let dummy_var: u32 = 0;
@@ -93,10 +80,9 @@ pub fn delay2(clocks: u32) {
 
 /// cycle accurate delay using the cycle counter register
 pub fn delay(clocks: u32) {
-    // NOTE: does not account for rollover
-    let target = get_ccount() + clocks;
+    let start = get_ccount();
     loop {
-        if get_ccount() > target {
+        if get_ccount().wrapping_sub(start) >= clocks {
             break;
         }
     }
@@ -115,5 +101,7 @@ pub fn get_ccount() -> u32 {
 /// Basic panic handler - just loops
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
-    loop {}
+    loop {
+        continue;
+    }
 }
