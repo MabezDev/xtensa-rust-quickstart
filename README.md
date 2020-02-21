@@ -48,7 +48,7 @@ Download the archived toolchain file, and extract it to the directory of your ch
 
 or
 
-    $ cargo install xbuild
+    $ cargo install cargo-xbuild
 
 #### esptool
     $ pip install esptool
