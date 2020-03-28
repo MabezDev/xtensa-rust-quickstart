@@ -46,6 +46,11 @@ Download the archived toolchain file, and extract it to the directory of your ch
 #### xargo or cargo xbuild
     $ cargo install xargo
 
+When you install xargo, it may complain that this requires the nightly channel. The fix for this is to switch your rust installation to use the nightly channel as follows:
+    $ rustup default nightly
+    $ rustup update
+
+
 or
 
     $ cargo install cargo-xbuild
@@ -60,10 +65,14 @@ or
 Update `CUSTOM_RUSTC` in `setenv` to point to the version of rust you compiled earlier. Then load the environment variables with `source setenv`.
 
 If you installed `xbuild` instead of `xargo`, you will need to update `flash` and `flash_release` accordingly.
-
+    
 You should now be able to call xargo (or cargo xbuild) to build the project. You can also run the flash script to both build the project, and flash it to the ESP32
+    $ xargo build
 
 You will need to change the parameter `BLINKY_GPIO` to match your board's LED pin. Unfortunately, this may require adjustments to the chip's IO_MUX peripheral, which will mean consulting the ESP32 Technical Reference Manual. See [this issue](https://github.com/MabezDev/idf2svd/issues/11) for more information.
+
+Then after editing the flash script, you should be able to flash the ESP as follows (you map need to edit the device):
+    $ ./flash
 
 ## Resources
 
