@@ -1,11 +1,19 @@
-#!/bin/zsh
+#!/bin/bash
 
-xargo build
+# If the RUSTC is wrong, you could get a silent failure that is hard to troubleshoot.
+if [[ "$CUSTOM_RUSTC" == "rustc"* ]]; then
+  echo "CUSTOM_RUSTC is not set correctly. This should be a path to rustc binary, like: /home/.../rust-xtensa/build/x86_64-unknown-linux-gnu/stage2/bin/rustc"
+  exit 1
+fi
+
+xargo build || exit 1
 
 # change this for release flashes
 BIN_PATH=target/xtensa-esp32-none-elf/debug/esp32
 
-rm $BIN_PATH.bin
+if [[ -e "$BIN_PATH" ]]; then
+  rm $BIN_PATH.bin
+fi
 
 # convert to bin
 esptool --chip esp32 elf2image --flash_mode="dio" --flash_freq "40m" --flash_size "4MB" -o $BIN_PATH.bin $BIN_PATH
