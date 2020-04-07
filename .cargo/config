@@ -1,5 +1,5 @@
 
-[target]
+[target.xtensa-esp32-none-elf]
 runner = "xtensa-esp32-elf-gdb -q -x openocd.gdb"
 
 

@@ -7,3 +7,4 @@ CUSTOM_RUSTC=/home/mabez/development/rust/xtensa/rust-xtensa
 export RUST_BACKTRACE=1 
 export XARGO_RUST_SRC=$CUSTOM_RUSTC/src 
 export RUSTC=$CUSTOM_RUSTC/build/x86_64-unknown-linux-gnu/stage2/bin/rustc
+export RUSTDOC=$CUSTOM_RUSTC/build/x86_64-unknown-linux-gnu/stage2/bin/rustdoc
