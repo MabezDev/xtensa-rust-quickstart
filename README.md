@@ -45,7 +45,7 @@ Assuming you built llvm in your home directory:
 
     $ git clone https://github.com/MabezDev/rust-xtensa
     $ cd rust-xtensa
-    $ ./configure --llvm-root=$HOME/llvm-project/llvm/build
+    $ ./configure --llvm-root=$HOME/llvm-project/llvm/build --experimental-targets=Xtensa
     $ ./x.py build
 
 ## Installing tools
