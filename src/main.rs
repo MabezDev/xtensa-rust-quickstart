@@ -3,11 +3,11 @@
 #![feature(asm)]
 
 use xtensa_lx6_rt as _;
+use xtensa_lx6_rt::{enable_ints, set_ints};
 
 use core::panic::PanicInfo;
 use esp32;
-use esp32_hal::gpio::GpioExt;
-use esp32_hal::ehal::digital::v2::OutputPin;
+use esp32_hal::prelude::*;
 
 /// The default clock source is the onboard crystal
 /// In most cases 40mhz (but can be as low as 2mhz depending on the board) 
@@ -31,12 +31,25 @@ fn main() -> ! {
 
     let gpios = dp.GPIO.split();
     let mut blinky = gpios.gpio2.into_push_pull_output();
-
+    
+    let input = gpios.gpio34.into_pull_down_input();
     loop {
-        blinky.set_high().unwrap();
-        delay(CORE_HZ);
-        blinky.set_low().unwrap();
-        delay(CORE_HZ);
+        // deep(0);
+        if input.is_high().unwrap() {
+            blinky.set_high().unwrap();
+            // unsafe { enable_ints(1 << 6) };
+            // unsafe { set_ints(1 << 0) };
+        } else {
+            blinky.set_low().unwrap();
+        }
+    }
+}
+
+fn deep(x: u32) -> u32 {
+    if x == 20 {
+        x
+    } else {
+        deep(x + 1)
     }
 }
 
