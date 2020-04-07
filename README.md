@@ -14,6 +14,19 @@ Building Rust compiler is CPU and memory intense process. The compilation can ta
 
 The required software components and resulting artefacts can take up to 10GB of disk space.
 
+### Recommended build method
+
+The fork now uses the xtensa enabled fork as its llvm submodule, so its now possible to build the entire toolchain in a few commands.
+
+```bash
+$ git clone https://github.com/MabezDev/rust-xtensa
+$ cd rust-xtensa
+$ ./configure --experimental-targets=Xtensa
+$ ./x.py build
+```
+
+If you would like to build the llvm fork separately, follow the instructions below.
+
 ### llvm-xtensa
 If you don't have them already, you'll first have to install `ninja-build` and a C++ compiler (such as `g++`).
 Please refer to [LLVM project](https://llvm.org/docs/GettingStarted.html) for more information.
