@@ -14,9 +14,13 @@ Building Rust compiler is CPU and memory intense process. The compilation can ta
 
 The required software components and resulting artefacts can take up to 10GB of disk space.
 
-### Recommended build method
+## Recommended build method
 
 The fork now uses the xtensa enabled fork as its llvm submodule, so its now possible to build the entire toolchain in a few commands.
+
+### Recommended build method - UNIX
+
+All that is required to build rustc for linux is the steps below. 
 
 ```bash
 $ git clone https://github.com/MabezDev/rust-xtensa
@@ -24,6 +28,31 @@ $ cd rust-xtensa
 $ ./configure --experimental-targets=Xtensa
 $ ./x.py build
 ```
+Before cross-compiling an xtensa target, you must set the following vars, which are set in the setenv script in this project:
+```
+XARGO_RUST_SRC=/path/to/rust-xtensa/src
+RUSTC=/path/to/rust-xtensa/build/x86_64-pc-windows-msvc/stage2/bin/rustc
+```
+
+### Recommended build method - Windows
+
+After making sure you have Visual Studio Community and python3 installed, in a cmd.exe run:
+
+```cmd
+$ git clone https://github.com/MabezDev/rust-xtensa
+$ cd rust-xtensa
+$ CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+$ python3 src/bootstrap/configure.py --experimental-targets=Xtensa
+$ python3 x.py build
+```
+
+Before cross-compiling an xtensa target, you must set the following vars either for your system or within your IDE:
+```
+XARGO_RUST_SRC=\path\to\rust-xtensa\src
+RUSTC=\path\to\rust-xtensa\build\x86_64-pc-windows-msvc\stage2\bin\rustc
+```
+
+## Manual llvm build instructions
 
 If you would like to build the llvm fork separately, follow the instructions below.
 
