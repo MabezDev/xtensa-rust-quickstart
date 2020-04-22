@@ -8,7 +8,7 @@ use core::panic::PanicInfo;
 use esp32;
 
 /// The default clock source is the onboard crystal
-/// In most cases 40mhz (but can be as low as 2mhz depending on the board) 
+/// In most cases 40mhz (but can be as low as 2mhz depending on the board)
 const CORE_HZ: u32 = 40_000_000;
 
 const BLINKY_GPIO: u32 = 2; // the GPIO hooked up to the onboard LED
@@ -18,7 +18,7 @@ const WDT_WKEY_VALUE: u32 = 0x50D83AA1;
 #[no_mangle]
 fn main() -> ! {
     let dp = unsafe { esp32::Peripherals::steal() };
-    
+
     let mut gpio = dp.GPIO;
     let mut rtccntl = dp.RTCCNTL;
     let mut timg0 = dp.TIMG0;
@@ -41,31 +41,36 @@ fn main() -> ! {
 
 fn disable_rtc_wdt(rtccntl: &mut esp32::RTCCNTL) {
     /* Disables the RTCWDT */
-    rtccntl.wdtwprotect.write(|w| unsafe { w.bits(WDT_WKEY_VALUE) });
+    rtccntl
+        .wdtwprotect
+        .write(|w| unsafe { w.bits(WDT_WKEY_VALUE) });
     rtccntl.wdtconfig0.modify(|_, w| unsafe {
-        w
-        .wdt_stg0()
-        .bits(0x0)
-        .wdt_stg1()
-        .bits(0x0)
-        .wdt_stg2()
-        .bits(0x0)
-        .wdt_stg3()
-        .bits(0x0)
-        .wdt_flashboot_mod_en()
-        .clear_bit()
-        .wdt_en()
-        .clear_bit()
+        w.wdt_stg0()
+            .bits(0x0)
+            .wdt_stg1()
+            .bits(0x0)
+            .wdt_stg2()
+            .bits(0x0)
+            .wdt_stg3()
+            .bits(0x0)
+            .wdt_flashboot_mod_en()
+            .clear_bit()
+            .wdt_en()
+            .clear_bit()
     });
     rtccntl.wdtwprotect.write(|w| unsafe { w.bits(0x0) });
 }
 
 fn disable_timg_wdts(timg0: &mut esp32::TIMG0, timg1: &mut esp32::TIMG1) {
-    timg0.wdtwprotect.write(|w| unsafe { w.bits(WDT_WKEY_VALUE)});
-    timg1.wdtwprotect.write(|w| unsafe { w.bits(WDT_WKEY_VALUE)});
+    timg0
+        .wdtwprotect
+        .write(|w| unsafe { w.bits(WDT_WKEY_VALUE) });
+    timg1
+        .wdtwprotect
+        .write(|w| unsafe { w.bits(WDT_WKEY_VALUE) });
 
-    timg0.wdtconfig0.write(|w| unsafe{ w.bits(0x0)});
-    timg1.wdtconfig0.write(|w| unsafe{ w.bits(0x0)});
+    timg0.wdtconfig0.write(|w| unsafe { w.bits(0x0) });
+    timg1.wdtconfig0.write(|w| unsafe { w.bits(0x0) });
 }
 
 pub fn set_led(reg: &mut esp32::GPIO, idx: u32, val: bool) {
@@ -77,9 +82,11 @@ pub fn set_led(reg: &mut esp32::GPIO, idx: u32, val: bool) {
 }
 
 /// Configure the pin as an output
-pub fn configure_pin_as_output(reg: &mut esp32::GPIO, gpio: u32){
-    reg.enable_w1ts.modify(|_, w| unsafe  { w.bits(0x1 << gpio) });
-    reg.func2_out_sel_cfg.modify(|_, w| unsafe { w.bits(0x100) });
+pub fn configure_pin_as_output(reg: &mut esp32::GPIO, gpio: u32) {
+    reg.enable_w1ts
+        .modify(|_, w| unsafe { w.bits(0x1 << gpio) });
+    reg.func2_out_sel_cfg
+        .modify(|_, w| unsafe { w.bits(0x100) });
 }
 
 /// rough delay - as a guess divide your cycles by 20 (results will differ on opt level)
@@ -89,7 +96,6 @@ pub fn delay2(clocks: u32) {
         unsafe { core::ptr::read_volatile(&dummy_var) };
     }
 }
-
 
 /// cycle accurate delay using the cycle counter register
 pub fn delay(clocks: u32) {
@@ -110,7 +116,6 @@ pub fn get_ccount() -> u32 {
     unsafe { asm!("rsr.ccount a2" : "={a2}"(x) ) };
     x
 }
-
 
 /// Basic panic handler - just loops
 #[panic_handler]
