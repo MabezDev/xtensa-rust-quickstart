@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+set -e
+
 xargo build
 
 # change this for release flashes
