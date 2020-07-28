@@ -1,12 +1,14 @@
 
-[target]
+# build core for the xtensa target
+[unstable]
+build-std = ["core"]
+
+[target.xtensa-esp32-none-elf]
 runner = "xtensa-esp32-elf-gdb -q -x openocd.gdb"
 
 
-[build]
 rustflags = [
   # use the xtensa gnu linker
-  "-C", "linker=xtensa-esp32-elf-ld",
   "-C", "link-arg=-Tlink.x",
   
   # if you need to link to pre-compiled C libraries provided by a C toolchain
@@ -16,4 +18,8 @@ rustflags = [
   # "-C", "link-arg=-Wl,-Tlink.x",
   # "-C", "link-arg=-nostartfiles",
 ]
-target = "xtensa-esp32-none-elf"
+
+[build]
+target = "xtensa-esp32-none-elf" # esp32
+# target = "xtensa-esp32-none-elf" # esp8266
+# target = "xtensa-esp32-none-elf" # generic xtensa target

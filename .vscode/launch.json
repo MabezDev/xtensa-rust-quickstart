@@ -6,7 +6,7 @@
     "configurations": [
         {
             "cwd": "${workspaceRoot}",
-            "executable": "target/xtensa-esp32-none-elf/debug/esp32",
+            "executable": "target/xtensa-esp32-none-elf/debug/examples/minimal",
             "name": "debug-with-svd",
             "request": "attach",
             "type": "cortex-debug",
@@ -18,6 +18,15 @@
             "serverpath": "${env:HOME}/programs/openocd-esp32/bin/openocd",
             "toolchainPath": "${env:HOME}/programs/xtensa-esp32-elf/bin/",
             "toolchainPrefix": "xtensa-esp32-elf",
+            "overrideAttachCommands": [
+                "set remote hardware-watchpoint-limit 2",
+                "mon halt",
+                "flushregs"
+            ],
+            "overrideRestartCommands": [
+                "mon reset halt",
+                "flushregs",
+            ],
             "configFiles": [
                 "openocd.cfg"
             ],

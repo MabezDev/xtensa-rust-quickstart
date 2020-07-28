@@ -1,0 +1,13 @@
+/* 
+    Specify main memory areas
+    These are generic ones, which will need to be filled in for your
+    device.
+
+    The ESP32 crate handles this for you. 
+*/
+MEMORY
+{
+  vectors_seg ( RX )     : ORIGIN = 0x40080000, len =  1k /* SRAM0 */
+  iram_seg ( RX )        : ORIGIN = 0x40080400, len = 128k-0x400 /* SRAM0 */
+  dram_seg ( RW )        : ORIGIN = 0x3FFB0000, len = 176k
+}

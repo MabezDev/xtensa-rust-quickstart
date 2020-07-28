@@ -1,14 +1,12 @@
 [package]
-name = "esp32-test"
+name = "xtensa-quickstart"
 version = "0.1.0"
 authors = ["Scott Mabin <MabezDev@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-xtensa-lx6-rt = { git = "https://github.com/esp-rs/xtensa-lx6-rt", rev = "89cea20c441d4a1624de99c7278df13af5c211a4" }
-esp32 = "0.2.2"
-# esp32 = { path = "../../hal/esp32-pac"}
-esp32-hal = { path = "../../hal/esp32-hal"}
+xtensa-lx6-rt = "0.3.0"
+xtensa-lx6 = "0.2.0"
 
 # NOTE: if you change this, remember to change all the scripts
 [[bin]]
@@ -25,3 +23,8 @@ lto = true
 incremental = false
 debug = true
 codegen-units = 1
+
+[dev-dependencies]
+panic-halt = "0.2.0"
+esp32-hal = { git = "https://github.com/esp-rs/esp32-hal", rev = "bc790104c93cf7dec719a949c51d9770db601383" }
+# esp32-hal = { path = "../../hal/esp32-hal" }
