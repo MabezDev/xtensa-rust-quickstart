@@ -1,6 +1,6 @@
 #![no_std]
 #![no_main]
-#![feature(asm)]
+#![feature(llvm_asm)]
 
 use xtensa_lx6_rt as _;
 
@@ -113,7 +113,7 @@ pub fn delay(clocks: u32) {
 /// have to require the asm nightly feature - see cortex-m-rt for more details
 pub fn get_ccount() -> u32 {
     let x: u32;
-    unsafe { asm!("rsr.ccount a2" : "={a2}"(x) ) };
+    unsafe { llvm_asm!("rsr.ccount a2" : "={a2}"(x) ) };
     x
 }
 
