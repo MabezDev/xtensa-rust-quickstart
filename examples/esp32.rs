@@ -1,13 +1,12 @@
 #![no_std]
 #![no_main]
 
-extern crate esp32_hal as hal;
-extern crate panic_halt;
-extern crate xtensa_lx6_rt;
+use panic_halt as _;
 
-use esp32_hal::target;
-use hal::prelude::*;
+use xtensa_lx6_rt::entry;
 use xtensa_lx6::timer::get_cycle_count;
+use esp32_hal::{self as hal, target};
+use hal::prelude::*;
 
 /// The default clock source is the onboard crystal
 /// In most cases 40mhz (but can be as low as 2mhz depending on the board)
@@ -15,7 +14,7 @@ const CORE_HZ: u32 = 40_000_000;
 
 const WDT_WKEY_VALUE: u32 = 0x50D83AA1;
 
-#[no_mangle]
+#[entry]
 fn main() -> ! {
     let dp = target::Peripherals::take().expect("Failed to obtain Peripherals");
 

@@ -5,16 +5,16 @@ build-std = ["core", "alloc"]
 
 
 [target.xtensa-esp32-none-elf] # esp32
-# [target.xtensa-esp8266-none-elf] # esp8266
 runner = "xtensa-esp32-elf-gdb -q -x openocd.gdb" # esp32 gdb
-# runner = "xtensa-lx106-elf-gdb -q -x openocd.gdb" # esp8266 gdb
 rustflags = [
-  # use the xtensa gnu linker
   "-C", "link-arg=-Wl,-Tlink.x",
-  
-  # if you need to link to pre-compiled C libraries provided by a C toolchain
-  # use GCC as the linker by commenting out both lines above and then
-  # uncommenting the line below
+  "-C", "link-arg=-nostartfiles",
+]
+
+[target.xtensa-esp8266-none-elf] # esp8266
+runner = "xtensa-lx106-elf-gdb -q -x openocd.gdb" # esp8266 gdb
+rustflags = [
+  "-C", "link-arg=-Wl,-Tlink.x",
   "-C", "link-arg=-nostartfiles",
 ]
 
