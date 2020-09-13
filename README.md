@@ -78,7 +78,7 @@ Assuming you built llvm in your home directory:
     $ ./x.py build
 
 ## Installing tools
-### xtensa-esp32-elf toolchain
+### xtensa-esp32-elf toolchain for esp32 development
 Instructions can be found [on Espressif's web site](https://docs.espressif.com/projects/esp-idf/en/release-v3.0/get-started/linux-setup.html).
 
 Download the archived toolchain file, and extract it to the directory of your choice. Then add the toolchain's bin/ directory to your `$PATH`. For example:
@@ -87,7 +87,27 @@ Download the archived toolchain file, and extract it to the directory of your ch
     $ tar -xzf ~/Downloads/xtensa-esp32-elf-linux64-1.22.0-80-g6c4433a-5.2.0.tar.gz -C ~/esp
     $ PATH="$PATH:$HOME/esp/xtensa-esp32-elf/bin"
 
-### xargo or cargo xbuild
+### xtensa-lx106-elf  toolchain for esp8266 development
+- install the xtensa-lx106-elf toolchain from the [espressif web site](https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/get-started/linux-setup.html).
+
+```
+$ mkdir ~/esp
+$ tar -xzf ~/Downloads/xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz -C ~/esp
+$ PATH="$PATH:$HOME/esp/xtensa-lx106-elf/bin"
+```
+
+### cargo, xargo or cargo xbuild
+
+Since the introduction of the `build-std` feature of cargo, it is possible to build `core` without any additional tools.
+Going forward this is the prefered method. How ever if this does not work for you remove the following lines from `.cargo/config`:
+
+```
+# build core for the xtensa target
+[unstable]
+build-std = ["core", "alloc"]
+```
+
+Then choose either xargo or cargo xbuild.
 
     $ cargo install xargo
 
@@ -118,15 +138,15 @@ Update `CUSTOM_RUSTC` in `setenv` to point to the version of rust you compiled e
 
 If you installed `xbuild` instead of `xargo`, you will need to update `flash` and `flash_release` accordingly.
     
-You should now be able to call xargo (or cargo xbuild) to build the project:
+You should now be able to call cargo (or cargo xbuild/xargo) to build the project:
 
-    $ xargo build
+    $ cargo build
 
 You will need to change the parameter `BLINKY_GPIO` to match your board's LED pin. Unfortunately, this may require adjustments to the chip's IO_MUX peripheral, which will mean consulting the ESP32 Technical Reference Manual. See [this issue](https://github.com/MabezDev/idf2svd/issues/11) for more information.
 
-Then after editing the flash script, you should be able to flash the ESP as follows (you map need to edit the device):
+### Flashing
 
-    $ ./flash
+The preffered method of flashing is to use [`cargo-espflash`](https://github.com/icewind1991/espflash). Otherwise you will have to invoke Espressif's `esptool.py` to flash the binaries manually.
 
 ## Resources
 
