@@ -15,14 +15,3 @@ esp32-hal = { path = "../../hal/esp32-hal" }
 [patch.crates-io]
 xtensa-lx6-rt = { version = "0.3.0", path = "../../projects/xtensa-lx6-rt"}
 
-
-[profile.dev]
-incremental = false
-debug = true
-codegen-units = 1
-
-[profile.release]
-lto = true
-incremental = false
-debug = true
-codegen-units = 1

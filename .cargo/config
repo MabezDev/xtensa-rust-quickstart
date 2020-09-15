@@ -1,8 +1,4 @@
 
-# build core for the xtensa target
-[unstable]
-build-std = ["core", "alloc"]
-
 
 [target.xtensa-esp32-none-elf] # esp32
 runner = "xtensa-esp32-elf-gdb -q -x openocd.gdb" # esp32 gdb

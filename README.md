@@ -99,7 +99,7 @@ $ PATH="$PATH:$HOME/esp/xtensa-lx106-elf/bin"
 ### cargo, xargo or cargo xbuild
 
 Since the introduction of the `build-std` feature of cargo, it is possible to build `core` without any additional tools.
-Going forward this is the prefered method. How ever if this does not work for you remove the following lines from `.cargo/config`:
+As this feature develops it will become the default, for now you can try it by adding the follwing to `.cargo/config`:
 
 ```
 # build core for the xtensa target
@@ -107,7 +107,7 @@ Going forward this is the prefered method. How ever if this does not work for yo
 build-std = ["core", "alloc"]
 ```
 
-Then choose either xargo or cargo xbuild.
+Instead, choose either xargo or cargo xbuild.
 
     $ cargo install xargo
 
