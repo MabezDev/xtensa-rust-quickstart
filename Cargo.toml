@@ -5,13 +5,10 @@ authors = ["Scott Mabin <scott@mabez.dev>"]
 edition = "2018"
 
 [dependencies]
-xtensa-lx6-rt = "0.3.0"
+xtensa-lx6-rt = "0.4.0"
 xtensa-lx6 = "0.2.0"
 panic-halt = "0.2.0"
 
 [dev-dependencies]
-esp32-hal = { path = "../../hal/esp32-hal" }
-
-[patch.crates-io]
-xtensa-lx6-rt = { version = "0.3.0", path = "../../projects/xtensa-lx6-rt"}
+esp32-hal = "0.1.0"
 
