@@ -1,26 +1,14 @@
 [package]
-name = "esp32-test"
+name = "xtensa-quickstart"
 version = "0.1.0"
-authors = ["Scott Mabin <MabezDev@gmail.com>"]
+authors = ["Scott Mabin <scott@mabez.dev>"]
 edition = "2018"
 
 [dependencies]
-xtensa-lx6-rt = { git = "https://github.com/esp-rs/xtensa-lx6-rt", rev = "89cea20c441d4a1624de99c7278df13af5c211a4" }
-esp32 = "0.2.1"
+xtensa-lx6-rt = "0.4.0"
+xtensa-lx6 = "0.2.0"
+panic-halt = "0.2.0"
 
-# NOTE: if you change this, remember to change all the scripts
-[[bin]]
-name = "esp32"
-path = "src/main.rs"
+[dev-dependencies]
+esp32-hal = "0.1.0"
 
-[profile.dev]
-lto = true 
-incremental = false
-debug = false # debug adds frame pointers - which must be omitted
-codegen-units = 1
-
-[profile.release]
-lto = true
-incremental = false
-debug = false # debug adds frame pointers - which must be omitted
-codegen-units = 1

@@ -1,13 +1,22 @@
 
-[target.xtensa-esp32-none-elf]
-runner = "xtensa-esp32-elf-gdb -q -x openocd.gdb"
+
+[target.xtensa-esp32-none-elf] # esp32
+runner = "xtensa-esp32-elf-gdb -q -x openocd.gdb" # esp32 gdb
+rustflags = [
+  "-C", "link-arg=-Wl,-Tlink.x",
+  "-C", "link-arg=-nostartfiles",
+]
+
+[target.xtensa-esp8266-none-elf] # esp8266
+runner = "xtensa-lx106-elf-gdb -q -x openocd.gdb" # esp8266 gdb
+rustflags = [
+  "-C", "link-arg=-Wl,-Tlink.x",
+  "-C", "link-arg=-nostartfiles",
+]
+
 
 
 [build]
-rustflags = [
-  "-C", "link-arg=-nostartfiles",
-  "-C", "debuginfo=0", # not 2
-  "-C", "link-arg=-Wl,-Tlink.x",
-  "--emit", "llvm-bc,link", # see: https://github.com/MabezDev/xtensa-rust-quickstart/issues/1#issuecomment-481119695
-]
-target = "xtensa-esp32-none-elf"
+target = "xtensa-esp32-none-elf" # esp32
+# target = "xtensa-esp8266-none-elf" # esp8266
+# target = "xtensa-none-elf" # generic xtensa target
