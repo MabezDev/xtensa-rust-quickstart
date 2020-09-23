@@ -142,7 +142,7 @@ You should now be able to call cargo (or cargo xbuild/xargo) to build the projec
 
     $ cargo build
 
-You will need to change the parameter `BLINKY_GPIO` to match your board's LED pin. Unfortunately, this may require adjustments to the chip's IO_MUX peripheral, which will mean consulting the ESP32 Technical Reference Manual. See [this issue](https://github.com/MabezDev/idf2svd/issues/11) for more information.
+Depending on your board, you may need to modify the example to toggle the pin the onboard LED is connected to.
 
 ### Flashing
 
