@@ -5,10 +5,18 @@ authors = ["Scott Mabin <scott@mabez.dev>"]
 edition = "2018"
 
 [dependencies]
-xtensa-lx6-rt = "0.4.0"
-xtensa-lx6 = "0.2.0"
+xtensa-lx-rt = "0.5.0"
+xtensa-lx = "0.3.0"
 panic-halt = "0.2.0"
 
-[dev-dependencies]
-esp32-hal = "0.1.0"
+# because we cant have optional dev-deps, these must go here
+esp32-hal = { version = "0.2.0", optional = true }
+esp8266-hal = { version = "0.4.0", optional = true }
 
+[[example]]
+name = "esp32"
+required-features = ["xtensa-lx-rt/lx6", "xtensa-lx/lx6", "esp32-hal"]
+
+[[example]]
+name = "esp8266"
+required-features = ["xtensa-lx-rt/lx106", "xtensa-lx/lx106", "esp8266-hal"]

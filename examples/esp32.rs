@@ -1,12 +1,11 @@
 #![no_std]
 #![no_main]
 
-use panic_halt as _;
-
-use xtensa_lx6_rt::entry;
-use xtensa_lx6::timer::get_cycle_count;
-use esp32_hal::{self as hal, target};
+use esp32_hal::target;
 use hal::prelude::*;
+use xtensa_lx::timer::delay;
+use panic_halt as _;
+use esp32_hal as hal;
 
 /// The default clock source is the onboard crystal
 /// In most cases 40mhz (but can be as low as 2mhz depending on the board)
@@ -71,14 +70,4 @@ fn disable_timg_wdts(timg0: &mut target::TIMG0, timg1: &mut target::TIMG1) {
 
     timg0.wdtconfig0.write(|w| unsafe { w.bits(0x0) });
     timg1.wdtconfig0.write(|w| unsafe { w.bits(0x0) });
-}
-
-/// cycle accurate delay using the cycle counter register
-pub fn delay(clocks: u32) {
-    let start = get_cycle_count();
-    loop {
-        if get_cycle_count().wrapping_sub(start) >= clocks {
-            break;
-        }
-    }
 }

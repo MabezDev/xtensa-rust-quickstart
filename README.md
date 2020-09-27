@@ -98,6 +98,8 @@ $ PATH="$PATH:$HOME/esp/xtensa-lx106-elf/bin"
 
 ### cargo, xargo or cargo xbuild
 
+__NOTE:__ Doesn't work for the ESP32 at the moment: https://github.com/rust-lang/wg-cargo-std-aware/issues/53 
+
 Since the introduction of the `build-std` feature of cargo, it is possible to build `core` without any additional tools.
 As this feature develops it will become the default, for now you can try it by adding the follwing to `.cargo/config`:
 
@@ -136,17 +138,19 @@ Update `CUSTOM_RUSTC` in `setenv` to point to the version of rust you compiled e
 
     $ source setenv
 
-If you installed `xbuild` instead of `xargo`, you will need to update `flash` and `flash_release` accordingly.
-    
-You should now be able to call cargo (or cargo xbuild/xargo) to build the project:
-
-    $ cargo build
-
-You will need to change the parameter `BLINKY_GPIO` to match your board's LED pin. Unfortunately, this may require adjustments to the chip's IO_MUX peripheral, which will mean consulting the ESP32 Technical Reference Manual. See [this issue](https://github.com/MabezDev/idf2svd/issues/11) for more information.
-
 ### Flashing
 
 The preffered method of flashing is to use [`cargo-espflash`](https://github.com/icewind1991/espflash). Otherwise you will have to invoke Espressif's `esptool.py` to flash the binaries manually.
+
+```bash
+# Example for the ESP32
+$ cargo espflash --chip esp32 --example esp32 --target xtensa-esp32-none-elf --speed 460800 --features="xtensa-lx-rt/lx6,xtensa-lx/lx6" /dev/ttyUSB0
+```
+
+```bash
+# Example for the ESP8266
+$ cargo espflash --chip esp8266 --example esp8266 --target xtensa-esp8266-none-elf --features="xtensa-lx-rt/lx106 xtensa-lx/lx106 esp8266-hal" /dev/ttyUSB0
+```
 
 ## Resources
 
