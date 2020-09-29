@@ -101,7 +101,7 @@ $ PATH="$PATH:$HOME/esp/xtensa-lx106-elf/bin"
 __NOTE:__ Doesn't work for the ESP32 at the moment: https://github.com/rust-lang/wg-cargo-std-aware/issues/53 
 
 Since the introduction of the `build-std` feature of cargo, it is possible to build `core` without any additional tools.
-As this feature develops it will become the default, for now you can try it by adding the follwing to `.cargo/config`:
+As this feature develops it will become the default, for now you can try it by adding the following to `.cargo/config`:
 
 ```
 # build core for the xtensa target
@@ -134,13 +134,13 @@ Full installation instructions are available on [the website](https://github.com
     $ git clone https://github.com/MabezDev/xtensa-rust-quickstart
 
 ### Workflow
-Update `CUSTOM_RUSTC` in `setenv` to point to the version of rust you compiled earlier. Then load the environment variables with
+Update `CUSTOM_RUSTC` in `setenv` to point to the version of rust you compiled earlier. Then load the environment variables with:
 
     $ source setenv
 
 ### Flashing
 
-The preffered method of flashing is to use [`cargo-espflash`](https://github.com/icewind1991/espflash). Otherwise you will have to invoke Espressif's `esptool.py` to flash the binaries manually.
+The preferred method of flashing is to use [`cargo-espflash`](https://github.com/icewind1991/espflash). Otherwise you will have to invoke Espressif's `esptool.py` to flash the binaries manually.
 
 ```bash
 # Example for the ESP32
