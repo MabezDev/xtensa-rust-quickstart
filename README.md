@@ -26,7 +26,7 @@ All that is required to build rustc for linux is the steps below.
 $ git clone https://github.com/MabezDev/rust-xtensa
 $ cd rust-xtensa
 $ ./configure --experimental-targets=Xtensa
-$ ./x.py build
+$ ./x.py build --stage 2
 ```
 Before cross-compiling an xtensa target, you must set the following vars, which are set in the setenv script in this project:
 ```
