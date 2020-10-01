@@ -140,7 +140,7 @@ Update `CUSTOM_RUSTC` in `setenv` to point to the version of rust you compiled e
 
 ### Flashing
 
-The preferred method of flashing is to use [`cargo-espflash`](https://github.com/icewind1991/espflash). Otherwise you will have to invoke Espressif's `esptool.py` to flash the binaries manually.
+The preferred method of flashing is to use [`cargo-espflash`](https://github.com/icewind1991/espflash), installed with `cargo install cargo-espflash`. Otherwise you will have to invoke Espressif's `esptool.py` to flash the binaries manually.
 
 ```bash
 # Example for the ESP32
