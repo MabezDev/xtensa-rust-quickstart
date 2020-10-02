@@ -144,7 +144,7 @@ The preferred method of flashing is to use [`cargo-espflash`](https://github.com
 
 ```bash
 # Example for the ESP32
-$ cargo espflash --chip esp32 --example esp32 --target xtensa-esp32-none-elf --speed 460800 --features="xtensa-lx-rt/lx6,xtensa-lx/lx6" /dev/ttyUSB0
+$ cargo espflash --chip esp32 --example esp32 --target xtensa-esp32-none-elf --speed 460800 --features="xtensa-lx-rt/lx6,xtensa-lx/lx6,esp32-hal" /dev/ttyUSB0
 ```
 
 ```bash
