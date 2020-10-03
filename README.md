@@ -48,7 +48,7 @@ $ python3 x.py build
 
 Before cross-compiling an xtensa target, you must set the following vars either for your system or within your IDE:
 ```
-XARGO_RUST_SRC=\path\to\rust-xtensa\src
+XARGO_RUST_SRC=\path\to\rust-xtensa\library
 RUSTC=\path\to\rust-xtensa\build\x86_64-pc-windows-msvc\stage2\bin\rustc
 ```
 
