@@ -146,13 +146,13 @@ Update `CUSTOM_RUSTC` in `setenv` to point to the version of rust you compiled e
 The preferred method of flashing is to use [`cargo-espflash`](https://github.com/icewind1991/espflash), installed with `cargo install cargo-espflash`. Otherwise you will have to invoke Espressif's `esptool.py` to flash the binaries manually.
 
 ```bash
-# Example for the ESP32
-$ cargo espflash --chip esp32 --example esp32 --target xtensa-esp32-none-elf --speed 460800 --features="xtensa-lx-rt/lx6,xtensa-lx/lx6,esp32-hal" /dev/ttyUSB0
+# Example for the ESP32, remember to use `target = xtensa-esp32-none-elf` inside `.cargo/config`
+$ cargo espflash --chip esp32 --example esp32 --speed 460800 --features="xtensa-lx-rt/lx6,xtensa-lx/lx6,esp32-hal" /dev/ttyUSB0
 ```
 
 ```bash
-# Example for the ESP8266
-$ cargo espflash --chip esp8266 --example esp8266 --target xtensa-esp8266-none-elf --features="xtensa-lx-rt/lx106 xtensa-lx/lx106 esp8266-hal" /dev/ttyUSB0
+# Example for the ESP8266, remember to use `target = xtensa-esp8266-none-elf` inside `.cargo/config`
+$ cargo espflash --chip esp8266 --example esp8266 --features="xtensa-lx-rt/lx106 xtensa-lx/lx106 esp8266-hal" /dev/ttyUSB0
 ```
 
 ## Resources
