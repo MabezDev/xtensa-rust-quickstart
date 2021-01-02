@@ -43,7 +43,7 @@ $ git clone https://github.com/MabezDev/rust-xtensa
 $ cd rust-xtensa
 $ CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
 $ python3 src/bootstrap/configure.py --experimental-targets=Xtensa
-$ python3 x.py build
+$ python3 x.py build --stage 2
 ```
 
 Before cross-compiling an xtensa target, you must set the following vars either for your system or within your IDE:
