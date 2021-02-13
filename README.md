@@ -83,12 +83,12 @@ Assuming you built llvm in your home directory:
 ## Installing tools
 ### xtensa-esp32-elf toolchain for esp32 development
 
-Download the latest toolchain file from [here](https://github.com/espressif/crosstool-NG/releases).
+Instructions can be found [on Espressif's web site](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started-legacy/linux-setup.html#toolchain-setup) and the latest tool toolchain can be downloaded from [here](https://github.com/espressif/crosstool-NG/releases).
 
 Extract it to the directory of your choice. Then add the toolchain's bin/ directory to your `$PATH`. For example:
 
     $ mkdir ~/esp
-    $ tar -xzf ~/Downloads/xtensa-esp32-elf-linux64-1.22.0-80-g6c4433a-8.3.0.tar.gz -C ~/esp
+    $ tar -xzf ~/Downloads/xtensa-esp32-elf-gcc8_4_0-esp-2020r3-linux-amd64.tar.gz -C ~/esp
     $ PATH="$PATH:$HOME/esp/xtensa-esp32-elf/bin"
 
 Old instructions can be found [on Espressif's web site](https://docs.espressif.com/projects/esp-idf/en/release-v3.0/get-started/linux-setup.html).
