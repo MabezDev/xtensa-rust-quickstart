@@ -7,7 +7,7 @@ use esp8266_hal::target::Peripherals;
 
 #[entry]
 fn main() -> ! {
-    let dp = unsafe { Peripherals::steal() };
+    let dp = Peripherals::take().unwrap();
     let pins = dp.GPIO.split();
     let mut led = pins.gpio2.into_push_pull_output();
     let (mut timer1, _) = dp.TIMER.timers();
