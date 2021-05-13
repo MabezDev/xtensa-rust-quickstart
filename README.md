@@ -26,11 +26,21 @@ The fork now uses the xtensa enabled fork as its llvm submodule, so its now poss
 All that is required to build rustc for linux is the steps below. 
 
 ```bash
-$ git clone https://github.com/MabezDev/rust-xtensa
+$ git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/MabezDev/rust-xtensa
 $ cd rust-xtensa
 $ ./configure --experimental-targets=Xtensa
 $ ./x.py build --stage 2
 ```
+(The "shallow" `git clone` command above will save about 50% in
+storage space and download size over a full clone. If you
+plan on developing `rust-xtensa` itself,
+
+```bash
+$ git clone --recurse-submodules https://github.com/MabezDev/rust-xtensa
+```
+
+will give you the entire history of the repo and its subprojects.)
+
 Before cross-compiling an xtensa target, you must set the following vars, which are set in the setenv script in this project:
 ```
 XARGO_RUST_SRC=/path/to/rust-xtensa/library
