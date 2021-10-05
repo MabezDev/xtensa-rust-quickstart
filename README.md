@@ -3,6 +3,13 @@
 
 Need help? Join the esp-rs room on matrix, https://matrix.to/#/#esp-rs:matrix.org.
 
+## Supported chips
+
+|name|arch|rust-target| custom compiler required |
+|-|-|-|-|
+|esp32|Xtensa|`xtensa-esp32-none-elf`| yes |
+|esp8266|Xtensa|`xtensa-esp8266-none-elf`| yes |
+
 ## Installing the compiler
 
 For Xtensa targets a forked compiler must be installed, follow the instructions from [the book](https://esp-rs.github.io/book/getting-started/installing-rust.html).
@@ -23,7 +30,7 @@ Extract it to the directory of your choice. Then add the toolchain's bin/ direct
 
 Old instructions can be found [on Espressif's web site](https://docs.espressif.com/projects/esp-idf/en/release-v3.0/get-started/linux-setup.html).
 
-### xtensa-lx106-elf  toolchain for esp8266 development
+### xtensa-lx106-elf toolchain for esp8266 development
 Install the xtensa-lx106-elf toolchain from the [espressif web site](https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/get-started/linux-setup.html).
 
 ```
