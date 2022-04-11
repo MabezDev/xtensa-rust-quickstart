@@ -1,7 +1,7 @@
 
 # Rust on the xtensa architecture
 
-⚠️ **NOTE**: This repo is now obsolete, there is now have a quickstart repo for [bare-metal](https://github.com/esp-rs/esp-template) and a template for [using the standard library](https://github.com/esp-rs/esp-idf-template).
+⚠️ **NOTE**: This repo is now obsolete, there is now a quickstart repo for [bare-metal](https://github.com/esp-rs/esp-template) and a template for [using the standard library](https://github.com/esp-rs/esp-idf-template).
 
 Need help? Join the esp-rs room on matrix, https://matrix.to/#/#esp-rs:matrix.org.
 
